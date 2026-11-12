@@ -2,13 +2,13 @@ from django.http import Http404, HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
-ITEMS = {
-    1: "Laptop",
-    2: "Mysz",
-    3: "Klawiatura",
-    4: "Monitor",
-    5: "Słuchawki",
-}
+ITEMS = [
+    {"id": 1, "name": "Laptop", "price": 2999, "category": "laptops", "is_available": True},
+    {"id": 2, "name": "Mysz", "price": 49, "category": "accessories", "is_available": False},
+    {"id": 3, "name": "Klawiatura", "price": 199, "category": "accessories", "is_available": True},
+    {"id": 4, "name": "Monitor", "price": 899, "category": "monitors", "is_available": True},
+    {"id": 5, "name": "Słuchawki", "price": 149, "category": "accessories", "is_available": False},
+]
 
 
 def index(request):
@@ -65,20 +65,15 @@ def product_slug(request, slug):
     return HttpResponse(f"Produkt: {slug}")
 
 
-def items(request):
-    category = request.GET.get("category", "all")
-    sort = request.GET.get("sort", "default")
-    page_raw = request.GET.get("page", "1")
-    if not page_raw.isdigit():
-        return HttpResponse("Parametr page musi być liczbą całkowitą", status=400)
-    page = int(page_raw)
-    return HttpResponse(f"Kategoria: {category}, sortowanie: {sort}, strona: {page}")
+def item_list(request):
+    return render(request, "shop/item_list.html", {"items": ITEMS})
 
 
 def item_detail(request, item_id):
-    if item_id not in ITEMS:
+    item = next((i for i in ITEMS if i["id"] == item_id), None)
+    if item is None:
         raise Http404("Nie ma takiego przedmiotu")
-    return HttpResponse(f"Przedmiot: {ITEMS[item_id]}")
+    return render(request, "shop/item_detail.html", {"item": item})
 
 
 def start(request):
