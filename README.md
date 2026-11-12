@@ -33,3 +33,16 @@ Zmiany potrzebne przy przepisywaniu `product_list.html` z Flaska na DTL (na pods
 | `{{ price * 1.23 }}` | brak arytmetyki – liczone w widoku |
 
 Liczba zmian w moim `product_list.html` z Flaska: **UZUPEŁNIJ po przepisaniu własnego pliku**.
+
+### Zadania 4 i 5 – formularz `ProductForm` i walidacja wbudowana
+
+Formularz jest pod `/products/add/` (GET → pusty formularz, POST → walidacja, przy sukcesie redirect na listę). Klasa ma 5 pól: `name` (`CharField`, 3–100 znaków), `price` (`DecimalField`, min. 0,01), `category` (`ChoiceField`), `is_available` (`BooleanField(required=False)`) i `description` (`CharField` z `Textarea`, `required=False`).
+
+Sprawdzane przypadki (zrzuty ekranu: **DODAJ do `docs/` i podlinkuj tutaj**):
+
+- pusty formularz → „To pole jest wymagane.” przy polach `name` i `price`,
+- za krótka nazwa („ab”) → komunikat o minimalnej długości 3 znaków,
+- ujemna cena („-5”) → komunikat, że wartość musi być większa lub równa 0,01,
+- tekst w polu liczbowym (po zmianie `type="number"` na `type="text"` w F12) → komunikat o konieczności wpisania liczby.
+
+Po usunięciu atrybutu `required` w F12 i wysłaniu pustego formularza dalej pojawia się „To pole jest wymagane.”. Walidacja działa **po stronie serwera** w Pythonie, a atrybuty HTML tylko pomagają użytkownikowi i można je dowolnie zmienić w przeglądarce, więc nie chronią aplikacji.

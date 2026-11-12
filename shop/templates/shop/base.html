@@ -10,7 +10,8 @@
     <nav>
         <a href="{% url 'shop:index' %}">Start</a> |
         <a href="{% url 'shop:item_list' %}">Przedmioty</a> |
-        <a href="{% url 'shop:product_list' %}">Produkty</a>
+        <a href="{% url 'shop:product_list' %}">Produkty</a> |
+        <a href="{% url 'shop:product_add' %}">Dodaj</a>
     </nav>
     <main>
         {% block content %}{% endblock %}
