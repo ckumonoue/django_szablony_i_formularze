@@ -46,3 +46,10 @@ Sprawdzane przypadki (zrzuty ekranu: **DODAJ do `docs/` i podlinkuj tutaj**):
 - tekst w polu liczbowym (po zmianie `type="number"` na `type="text"` w F12) → komunikat o konieczności wpisania liczby.
 
 Po usunięciu atrybutu `required` w F12 i wysłaniu pustego formularza dalej pojawia się „To pole jest wymagane.”. Walidacja działa **po stronie serwera** w Pythonie, a atrybuty HTML tylko pomagają użytkownikowi i można je dowolnie zmienić w przeglądarce, więc nie chronią aplikacji.
+
+### Zadanie 6 – walidacja własna
+
+- `clean_name()` – nazwa nie może być „test” ani „asdf” (bez względu na wielkość liter); metoda zwraca też nazwę po `strip()`.
+- `clean()` – reguła między polami: produkt z kategorii „Laptopy” nie może kosztować mniej niż 500 zł (błąd przypięty do pola `price` przez `add_error`).
+
+Test ręczny: nazwa „test” → błąd przy polu Nazwa; kategoria Laptopy + cena 300 → błąd przy polu Cena; kategoria Akcesoria + cena 300 → zapis przechodzi.

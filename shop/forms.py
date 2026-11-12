@@ -15,3 +15,17 @@ class ProductForm(forms.Form):
     category = forms.ChoiceField(label="Kategoria", choices=CATEGORIES)
     is_available = forms.BooleanField(label="Dostępny", required=False, initial=True)
     description = forms.CharField(label="Opis", widget=forms.Textarea, required=False)
+
+    def clean_name(self):
+        name = self.cleaned_data["name"].strip()
+        if name.lower() in {"test", "asdf"}:
+            raise forms.ValidationError("Wpisz prawdziwą nazwę produktu.")
+        return name
+
+    def clean(self):
+        cleaned = super().clean()
+        price = cleaned.get("price")
+        category = cleaned.get("category")
+        if price is not None and category == "laptops" and price < 500:
+            self.add_error("price", "Laptop za mniej niż 500 zł? Sprawdź cenę.")
+        return cleaned
