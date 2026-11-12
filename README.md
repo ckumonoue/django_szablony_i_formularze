@@ -14,6 +14,56 @@ python manage.py runserver
 
 Serwer: http://127.0.0.1:8000
 
+## Struktura
+
+```text
+django_szablony_i_formularze/
+├── manage.py
+├── config/                  # ustawienia projektu
+│   ├── settings.py
+│   └── urls.py              # główna mapa URL
+├── shop/                    # aplikacja
+│   ├── forms.py             # formularze: ProductForm, SearchForm
+│   ├── views.py
+│   ├── urls.py
+│   ├── templates/
+│   │   └── shop/            # <- drugi raz "shop"
+│   │       ├── base.html
+│   │       ├── index.html
+│   │       ├── item_list.html
+│   │       ├── item_detail.html
+│   │       ├── product_list.html
+│   │       ├── product_detail.html
+│   │       └── product_form.html
+│   └── static/
+│       └── shop/            # <- i tu też
+│           └── style.css
+├── requirements.txt
+└── .gitignore
+```
+
+**Dlaczego dwa razy `shop`?** Django zbiera szablony (i pliki statyczne) ze wszystkich aplikacji do jednej puli. Gdyby dwie aplikacje miały `index.html` bez podfolderu, wygrałby plik z aplikacji wyżej w `INSTALLED_APPS` – po cichu, bez błędu. Podfolder z nazwą aplikacji zmienia nazwy na `shop/index.html` i `blog/index.html`, więc nie ma konfliktu. Dlatego w widoku piszemy `render(request, "shop/index.html", ...)`, a w szablonie `{% static 'shop/style.css' %}`.
+
+## Trasy
+
+| Metoda | Adres | Nazwa trasy | Opis |
+|---|---|---|---|
+| GET | `/` | `shop:index` | strona główna (szablon) |
+| GET | `/about/`, `/contact/`, `/terms/` | `shop:about`, `shop:contact`, `shop:terms` | proste strony tekstowe |
+| GET | `/api/info/` | `shop:info` | JSON |
+| GET | `/admin-panel/` | `shop:forbidden` | zawsze 403 |
+| GET | `/hello/<name>/`, `/hello/<name>/<age>/` | `shop:hello`, `shop:hello_age` | powitania |
+| GET | `/add/`, `/subtract/`, `/multiply/`, `/divide/` + `<a>/<b>/` | `shop:add` … | kalkulator |
+| GET | `/items/` | `shop:item_list` | lista przedmiotów, niedostępne wyróżnione |
+| GET | `/items/<id>/` | `shop:item_detail` | szczegóły, brak → 404 |
+| GET | `/products/?q=&only_available=` | `shop:product_list` | lista produktów z wyszukiwarką |
+| GET, POST | `/products/add/` | `shop:product_add` | formularz dodawania z walidacją |
+| GET | `/products/<id>/` | `shop:product_detail` | szczegóły produktu |
+| GET | `/products/<slug>/` | `shop:product_slug` | produkt po slugu (po trasach z `int`) |
+| GET | `/start/` | `shop:start` | redirect na `/` |
+| GET | `/links/` | `shop:links` | adresy z `reverse` |
+| GET | `/admin/` | – | panel admina Django |
+
 ## Notatki
 
 ### Zadanie 3 – Jinja2 → szablony Django
