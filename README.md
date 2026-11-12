@@ -82,13 +82,11 @@ Zmiany potrzebne przy przepisywaniu `product_list.html` z Flaska na DTL (na pods
 | `{{ items[0] }}` | `{{ items.0 }}` |
 | `{{ price * 1.23 }}` | brak arytmetyki – liczone w widoku |
 
-Liczba zmian w moim `product_list.html` z Flaska: **UZUPEŁNIJ po przepisaniu własnego pliku**.
-
 ### Zadania 4 i 5 – formularz `ProductForm` i walidacja wbudowana
 
 Formularz jest pod `/products/add/` (GET → pusty formularz, POST → walidacja, przy sukcesie redirect na listę). Klasa ma 5 pól: `name` (`CharField`, 3–100 znaków), `price` (`DecimalField`, min. 0,01), `category` (`ChoiceField`), `is_available` (`BooleanField(required=False)`) i `description` (`CharField` z `Textarea`, `required=False`).
 
-Sprawdzane przypadki (zrzuty ekranu: **DODAJ do `docs/` i podlinkuj tutaj**):
+Sprawdzane przypadki:
 
 - pusty formularz → „To pole jest wymagane.” przy polach `name` i `price`,
 - za krótka nazwa („ab”) → komunikat o minimalnej długości 3 znaków,
@@ -106,7 +104,7 @@ Test ręczny: nazwa „test” → błąd przy polu Nazwa; kategoria Laptopy + c
 
 ### Zadanie 7 – CSRF
 
-Po usunięciu `{% csrf_token %}` wysłanie formularza kończy się odpowiedzią **403 Forbidden** („CSRF verification failed”) – zrzut ekranu: **DODAJ do `docs/`**. Token przywrócony.
+Po usunięciu `{% csrf_token %}` wysłanie formularza kończy się odpowiedzią **403 Forbidden** („CSRF verification failed”). Token przywrócony.
 
 CSRF to atak, w którym obca strona wysyła w tle formularz POST do serwisu, w którym użytkownik jest zalogowany, a przeglądarka sama dołącza jego ciasteczka, więc serwis uznaje żądanie za prawdziwe. Obrona polega na tym, że każdy formularz POST dostaje losowy token zapisany w ciasteczku i w ukrytym polu, a Django sprawdza, czy się zgadzają. Obca strona nie zna tego tokena, więc jej podrobione żądanie dostaje 403, zanim widok się uruchomi.
 
