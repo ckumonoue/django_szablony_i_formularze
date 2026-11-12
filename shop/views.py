@@ -2,6 +2,12 @@ from django.http import Http404, HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
+PRODUCTS = [
+    {"id": 1, "name": "Laptop", "price": 2999, "category": "laptops", "is_available": True},
+    {"id": 2, "name": "Mysz", "price": 49, "category": "accessories", "is_available": False},
+    {"id": 3, "name": "Klawiatura", "price": 199, "category": "accessories", "is_available": True},
+]
+
 ITEMS = [
     {"id": 1, "name": "Laptop", "price": 2999, "category": "laptops", "is_available": True},
     {"id": 2, "name": "Mysz", "price": 49, "category": "accessories", "is_available": False},
@@ -87,3 +93,14 @@ def links(request):
         reverse("shop:item_detail", args=[3]),
     ]
     return HttpResponse("\n".join(lines), content_type="text/plain; charset=utf-8")
+
+
+def product_list(request):
+    return render(request, "shop/product_list.html", {"products": PRODUCTS})
+
+
+def product_detail(request, product_id):
+    product = next((p for p in PRODUCTS if p["id"] == product_id), None)
+    if product is None:
+        raise Http404("Nie ma takiego produktu")
+    return render(request, "shop/product_detail.html", {"product": product})
