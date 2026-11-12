@@ -1,5 +1,5 @@
 from django.http import Http404, HttpResponse, JsonResponse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse
 
 ITEMS = {
@@ -12,7 +12,7 @@ ITEMS = {
 
 
 def index(request):
-    return HttpResponse("Strona główna sklepu django_start")
+    return render(request, "shop/index.html", {"project_name": "Sklep 4TP", "user_name": "ckumonoue"})
 
 
 def about(request):
