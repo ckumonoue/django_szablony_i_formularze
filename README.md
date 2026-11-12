@@ -59,3 +59,9 @@ Test ręczny: nazwa „test” → błąd przy polu Nazwa; kategoria Laptopy + c
 Po usunięciu `{% csrf_token %}` wysłanie formularza kończy się odpowiedzią **403 Forbidden** („CSRF verification failed”) – zrzut ekranu: **DODAJ do `docs/`**. Token przywrócony.
 
 CSRF to atak, w którym obca strona wysyła w tle formularz POST do serwisu, w którym użytkownik jest zalogowany, a przeglądarka sama dołącza jego ciasteczka, więc serwis uznaje żądanie za prawdziwe. Obrona polega na tym, że każdy formularz POST dostaje losowy token zapisany w ciasteczku i w ukrytym polu, a Django sprawdza, czy się zgadzają. Obca strona nie zna tego tokena, więc jej podrobione żądanie dostaje 403, zanim widok się uruchomi.
+
+### Zadanie 8 – wyszukiwarka (GET)
+
+`SearchForm` (pola `q` i `only_available`) jest związany z `request.GET`, więc po wysłaniu pola zostają wypełnione bez ręcznego `value="{{ q }}"`. Formularz jest nad listą na `/products/`, np. `/products/?q=lap&only_available=on`.
+
+Nie ma w nim `{% csrf_token %}`, bo GET nie zmienia danych na serwerze – nie ma czego podrobić. Token jest potrzebny tylko dla metod zmieniających stan (POST, PUT, PATCH, DELETE).
